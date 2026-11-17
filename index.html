@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cascade Fitness & Spa · Bouaké</title>
+  <meta name="description" content="Découvrez Cascade Fitness & Spa à Bouaké : bien plus qu'un espace de sport, une expérience complète à vivre.">
+  
+  <!-- Polices Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet principal -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       BARRE DE NAVIGATION
+       ========================================================= -->
+  <header class="navbar" id="navbar">
+    <div class="navbar-container">
+      <a href="#" class="brand-logo" aria-label="Accueil Cascade Fitness & Spa">
+        <img src="assets/images/logo.png" alt="Logo Cascade Fitness & Spa" class="logo-img">
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero" class="nav-link active">Accueil</a>
+        <a href="#univers" class="nav-link">Nos espaces</a>
+        <a href="#univers" class="nav-link">Nos activités</a>
+        <a href="#hero" class="nav-link">À propos</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="#univers" class="btn btn-nav">DÉCOUVRIR CASCADE</a>
+      </div>
+
+      <!-- Bouton Menu Mobile (Burger) -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         SECTION HERO (AVEC VIDÉO & ANIMATION DU TEXTE)
+         ========================================================= -->
+    <section class="hero-section" id="hero">
+      <!-- Vidéo d'arrière-plan -->
+      <div class="video-wrapper">
+        <video class="hero-video" autoplay loop muted playsinline preload="auto">
+          <source src="assets/videos/hero.mp4" type="video/mp4">
+          Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+        <!-- Overlay dégradé sombre pour maximiser le contraste et la lisibilité -->
+        <div class="hero-overlay"></div>
+      </div>
+
+      <!-- Contenu textuel centré du Hero -->
+      <div class="hero-content">
+        <div class="anim-eyebrow">
+          <span class="eyebrow-badge">BIENVENUE CHEZ CASCADE FITNESS & SPA</span>
+        </div>
+
+        <h1 class="hero-title">
+          <div class="line-mask">
+            <span class="title-line">BIEN PLUS QU'UN ESPACE DE SPORT .</span>
+          </div>
+          <div class="line-mask">
+            <span class="title-line">UNE EXPERIENCE <span class="highlight">À VIVRE</span> .</span>
+          </div>
+        </h1>
+
+        <div class="desc-mask">
+          <p class="hero-description">
+            Découvrez un univers où fitness, natation, bien-être et détente se rencontrent. 
+            Profitez d'un cadre pensé pour vous offrir une expérience complète au cœur de Bouaké.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#univers" class="btn btn-primary">EXPLORER NOS ESPACES</a>
+          <a href="#contact" class="btn btn-secondary">NOUS CONTACTER</a>
+        </div>
+      </div>
+
+      <!-- Indicateur de défilement (Scroll indicator) -->
+      <div class="scroll-cue">
+        <span class="scroll-text">DÉCOUVRIR</span>
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PAGE 2 : SECTION NOS UNIVERS (CARROUSEL CONTINU INFINI)
+         ========================================================= -->
+    <section class="univers-section" id="univers">
+      <div class="univers-header">
+        <div class="anim-p2-eyebrow">
+          <span class="section-tag">NOS UNIVERS · CASCADE FITNESS & SPA</span>
+        </div>
+
+        <h2 class="univers-title">
+          <div class="line-mask">
+            <span class="p2-title-line">Un lieu. Plusieurs façons</span>
+          </div>
+          <div class="line-mask">
+            <span class="p2-title-line">de vivre <span class="highlight">l'expérience</span>.</span>
+          </div>
+        </h2>
+
+        <div class="desc-mask">
+          <p class="univers-description">
+            Découvrez les différents espaces qui composent l'univers Cascade.
+          </p>
+        </div>
+      </div>
+
+      <!-- Conteneur Carrousel Haute Performance -->
+      <div class="carousel-outer" id="carouselOuter">
+        <!-- Contrôles interactifs gauche/droite -->
+        <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Espace précédent">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <button class="carousel-btn next-btn" id="nextBtn" aria-label="Espace suivant">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Piste du Carrousel (Track) -->
+        <div class="carousel-viewport" id="carouselViewport">
+          <div class="carousel-track" id="carouselTrack">
+            
+            <!-- Carte 1 : Cardio & Fitness -->
+            <article class="carousel-card" data-index="0">
+              <div class="card-image-wrap">
+                <img src="assets/images/cardio.png" alt="Espace Cardio et Fitness Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 01</div>
+                  <h3 class="card-title">Cardio & Fitness</h3>
+                  <p class="card-desc">Tapis de course et vélos haute technologie</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Carte 2 : Spa, Sauna & Hammam -->
+            <article class="carousel-card" data-index="1">
+              <div class="card-image-wrap">
+                <img src="assets/images/spa.png" alt="Espace Spa, Sauna et Hammam Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 02</div>
+                  <h3 class="card-title">Spa & Bien-être</h3>
+                  <p class="card-desc">Sauna traditionnel et hammam pour la récupération</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Carte 3 : Bassin & Piscine -->
+            <article class="carousel-card" data-index="2">
+              <div class="card-image-wrap">
+                <img src="assets/images/piscine.png" alt="Bassin de natation plein air Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 03</div>
+                  <h3 class="card-title">Bassin de Natation</h3>
+                  <p class="card-desc">Piscine plein air pour cours d'aquagym et nage libre</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Carte 4 : Plateau Musculation -->
+            <article class="carousel-card" data-index="3">
+              <div class="card-image-wrap">
+                <img src="assets/images/musculation.png" alt="Plateau de Musculation LifeFitness Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 04</div>
+                  <h3 class="card-title">Plateau Musculation</h3>
+                  <p class="card-desc">Machines guidées LifeFitness et zone charges libres</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Carte 5 : Lounge & Café -->
+            <article class="carousel-card" data-index="4">
+              <div class="card-image-wrap">
+                <img src="assets/images/lounge.png" alt="Lounge et espace de détente Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 05</div>
+                  <h3 class="card-title">Lounge & Espace de vie</h3>
+                  <p class="card-desc">Espace convivialité, rafraîchissements et détente</p>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Indicateur d'interaction discret -->
+        <div class="carousel-interaction-hint">
+          <span class="hint-dot"></span>
+          <span>Défilement continu · Glissez pour explorer ou survolez pour mettre en pause</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       FOOTER PROTOTYPE
+       ========================================================= -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="assets/images/logo.png" alt="Cascade Logo" class="footer-logo">
+        <span class="footer-brand-name">CASCADE FITNESS & SPA · BOUAKÉ</span>
+      </div>
+      <p class="footer-copy">© 2026 Cascade Fitness & Spa. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- GSAP 3 & ScrollTrigger -->
+  <script src="js/gsap.min.js"></script>
+  <script src="js/ScrollTrigger.min.js"></script>
+  <!-- Script principal d'animation et de carrousel -->
+  <script src="js/main.js"></script>
+</body>
+</html>
