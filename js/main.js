@@ -87,14 +87,35 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   /* --------------------------------------------------------------------------
+     2.1 TRANSITION DE DÉFILEMENT "STACKING CARDS" (HERO -> PAGE 2)
+     Le Hero reste épinglé en haut d'écran pendant le scroll, rétrécit élégamment
+     (scale: 0.92, coins arrondis à 28px, luminosité douce), tandis que la Page 2
+     monte par-dessus au premier plan. Réversible au scroll vers le haut.
+     -------------------------------------------------------------------------- */
+  gsap.to('.hero-card-scale', {
+    scale: 0.92,
+    opacity: 0.55,
+    borderRadius: '28px',
+    ease: 'power1.inOut',
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: '+=100%',
+      scrub: 0.8,
+      pin: true,
+      pinSpacing: false
+    }
+  });
+
+  /* --------------------------------------------------------------------------
      3. ANIMATION D'ENTRÉE DE PAGE 2 (SCROLLTRIGGER)
      Reproduction exacte de la cadence de la vidéo Frame-50.mp4
      -------------------------------------------------------------------------- */
   const p2Tl = gsap.timeline({
     scrollTrigger: {
       trigger: '#univers',
-      start: 'top 75%',
-      toggleActions: 'play none none none'
+      start: 'top 65%',
+      toggleActions: 'play none none reverse'
     },
     defaults: { ease: 'power3.out' }
   });
