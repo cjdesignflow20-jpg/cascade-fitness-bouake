@@ -77,12 +77,16 @@
          ========================================================= -->
     <section class="hero-section" id="hero">
       <div class="hero-card-scale">
-        <!-- Vidéo d'arrière-plan : Desktop & Mobile dédiée -->
+        <!-- Vidéo d'arrière-plan : Desktop & Mobile dédiée avec Posters immédiats -->
         <div class="video-wrapper">
-          <video class="hero-video hero-video-desktop" autoplay loop muted playsinline preload="auto">
+          <!-- Calques Posters immédiats (affichés dès la milliseconde 0 pour zéro écran noir) -->
+          <img class="hero-poster hero-poster-desktop" src="assets/images/hero-poster-desktop.png" alt="Aperçu Cascade Fitness & Spa">
+          <img class="hero-poster hero-poster-mobile" src="assets/images/hero-poster-mobile.jpg" alt="Aperçu Cascade Fitness & Spa Mobile">
+
+          <video class="hero-video hero-video-desktop" poster="assets/images/hero-poster-desktop.png" autoplay loop muted playsinline preload="auto">
             <source src="assets/videos/hero.mp4" type="video/mp4">
           </video>
-          <video class="hero-video hero-video-mobile" autoplay loop muted playsinline preload="auto">
+          <video class="hero-video hero-video-mobile" poster="assets/images/hero-poster-mobile.jpg" autoplay loop muted playsinline preload="auto">
             <source src="assets/videos/hero-mobile.mp4" type="video/mp4">
           </video>
           <!-- Overlay dégradé sombre pour maximiser le contraste et la lisibilité -->

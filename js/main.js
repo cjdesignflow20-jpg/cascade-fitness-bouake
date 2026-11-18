@@ -79,6 +79,62 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* --------------------------------------------------------------------------
+     1.1 GESTION DU CHARGEMENT DES VIDÉOS HERO & FONDU DES POSTERS
+     Garantit un affichage instantané du poster et une transition douce sans flash noir
+     -------------------------------------------------------------------------- */
+  function setupHeroVideoTransition() {
+    const isMobile = window.innerWidth <= 768;
+    const desktopVideo = document.querySelector('.hero-video-desktop');
+    const mobileVideo = document.querySelector('.hero-video-mobile');
+    const desktopPoster = document.querySelector('.hero-poster-desktop');
+    const mobilePoster = document.querySelector('.hero-poster-mobile');
+
+    function bindTransition(video, poster) {
+      if (!video) return;
+
+      function onReadyToPlay() {
+        video.classList.add('is-loaded');
+        if (poster) {
+          setTimeout(() => {
+            poster.classList.add('is-hidden');
+          }, 150);
+        }
+      }
+
+      if (video.readyState >= 3 && !video.paused) {
+        onReadyToPlay();
+      } else {
+        video.addEventListener('playing', onReadyToPlay, { once: true });
+        if (video.paused) {
+          video.play().catch(() => {});
+        }
+        setTimeout(onReadyToPlay, 3000);
+      }
+    }
+
+    if (isMobile) {
+      bindTransition(mobileVideo, mobilePoster);
+    } else {
+      bindTransition(desktopVideo, desktopPoster);
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const nowMobile = window.innerWidth <= 768;
+        if (nowMobile) {
+          bindTransition(mobileVideo, mobilePoster);
+        } else {
+          bindTransition(desktopVideo, desktopPoster);
+        }
+      }, 250);
+    });
+  }
+
+  setupHeroVideoTransition();
+
+  /* --------------------------------------------------------------------------
      2. ANIMATION D'ENTRÉE DU HERO (SYNCHRONISÉE & CADENCÉE)
      -------------------------------------------------------------------------- */
   const heroTl = gsap.timeline({

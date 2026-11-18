@@ -1,0 +1,37 @@
+# Systèmes d'exploitation & métadonnées
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environnements et secrets
+.env
+.env.*
+*.env
+*.local
+
+# Dépendances et caches
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Éditeurs et IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sauvegardes locales (la sauvegarde officielle est hors du dépôt)
+backups/
+*.bak
+*.tmp
+*.temp
+*~
+
+# Fichiers de test temporaires
+test_*.png
