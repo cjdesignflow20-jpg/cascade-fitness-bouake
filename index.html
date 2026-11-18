@@ -46,17 +46,44 @@
     </div>
   </header>
 
+  <!-- =========================================================
+       TIROIR DE NAVIGATION MOBILE PLEIN ÉCRAN
+       ========================================================= -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="mobile-drawer-header">
+      <img src="assets/images/logo.png" alt="Logo Cascade Fitness & Spa" class="mobile-drawer-logo">
+      <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Fermer le menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <nav class="mobile-drawer-nav">
+      <a href="#hero" class="mobile-nav-link active">Accueil</a>
+      <a href="#univers" class="mobile-nav-link">Nos espaces</a>
+      <a href="#univers" class="mobile-nav-link">Nos activités</a>
+      <a href="#hero" class="mobile-nav-link">À propos</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    </nav>
+    <div class="mobile-drawer-cta">
+      <a href="#univers" class="btn btn-primary btn-drawer">DÉCOUVRIR CASCADE</a>
+    </div>
+  </div>
+
   <main>
     <!-- =========================================================
          SECTION HERO (AVEC VIDÉO & ANIMATION DU TEXTE)
          ========================================================= -->
     <section class="hero-section" id="hero">
       <div class="hero-card-scale">
-        <!-- Vidéo d'arrière-plan -->
+        <!-- Vidéo d'arrière-plan : Desktop & Mobile dédiée -->
         <div class="video-wrapper">
-          <video class="hero-video" autoplay loop muted playsinline preload="auto">
+          <video class="hero-video hero-video-desktop" autoplay loop muted playsinline preload="auto">
             <source src="assets/videos/hero.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas la lecture vidéo.
+          </video>
+          <video class="hero-video hero-video-mobile" autoplay loop muted playsinline preload="auto">
+            <source src="assets/videos/hero-mobile.mp4" type="video/mp4">
           </video>
           <!-- Overlay dégradé sombre pour maximiser le contraste et la lisibilité -->
           <div class="hero-overlay"></div>
@@ -125,8 +152,8 @@
         </div>
       </div>
 
-      <!-- Conteneur Carrousel Haute Performance -->
-      <div class="carousel-outer" id="carouselOuter">
+      <!-- Conteneur Carrousel Haute Performance Desktop (1 ligne large) -->
+      <div class="carousel-outer carousel-desktop" id="carouselOuter">
         <!-- Contrôles interactifs gauche/droite -->
         <button class="carousel-btn prev-btn" id="prevBtn" aria-label="Espace précédent">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -211,6 +238,81 @@
         <div class="carousel-interaction-hint">
           <span class="hint-dot"></span>
           <span>Défilement continu · Glissez pour explorer ou survolez pour mettre en pause</span>
+        </div>
+      </div>
+
+      <!-- CARROUSEL MOBILE DOUBLE RANGÉE (AFFICHÉ SPÉCIFIQUEMENT SUR SMARTPHONE) -->
+      <div class="carousel-mobile-dual" id="carouselMobileDual">
+        <!-- Rangée 1 : Haut (Cardio, Spa, Piscine) -->
+        <div class="mobile-row-viewport" id="mobileViewport1">
+          <div class="mobile-row-track" id="mobileTrack1">
+            <article class="carousel-card mobile-card" data-mobile-index="0">
+              <div class="card-image-wrap">
+                <img src="assets/images/cardio.png" alt="Cardio & Fitness Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 01</div>
+                  <h3 class="card-title">Cardio & Fitness</h3>
+                </div>
+              </div>
+            </article>
+            <article class="carousel-card mobile-card" data-mobile-index="1">
+              <div class="card-image-wrap">
+                <img src="assets/images/spa.png" alt="Spa & Bien-être Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 02</div>
+                  <h3 class="card-title">Spa & Bien-être</h3>
+                </div>
+              </div>
+            </article>
+            <article class="carousel-card mobile-card" data-mobile-index="2">
+              <div class="card-image-wrap">
+                <img src="assets/images/piscine.png" alt="Bassin de Natation Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 03</div>
+                  <h3 class="card-title">Bassin de Natation</h3>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Rangée 2 : Bas (Musculation, Lounge, Cardio) -->
+        <div class="mobile-row-viewport" id="mobileViewport2">
+          <div class="mobile-row-track" id="mobileTrack2">
+            <article class="carousel-card mobile-card" data-mobile-index="3">
+              <div class="card-image-wrap">
+                <img src="assets/images/musculation.png" alt="Plateau Musculation Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 04</div>
+                  <h3 class="card-title">Plateau Musculation</h3>
+                </div>
+              </div>
+            </article>
+            <article class="carousel-card mobile-card" data-mobile-index="4">
+              <div class="card-image-wrap">
+                <img src="assets/images/lounge.png" alt="Lounge & Espace Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 05</div>
+                  <h3 class="card-title">Lounge & Détente</h3>
+                </div>
+              </div>
+            </article>
+            <article class="carousel-card mobile-card" data-mobile-index="5">
+              <div class="card-image-wrap">
+                <img src="assets/images/cardio.png" alt="Cardio & Fitness Cascade">
+                <div class="card-overlay">
+                  <div class="card-badge">ESPACE 01</div>
+                  <h3 class="card-title">Cardio & Fitness</h3>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Indicateur mobile -->
+        <div class="carousel-interaction-hint mobile-hint">
+          <span class="hint-dot"></span>
+          <span>Double rangée continue · Touchez pour explorer</span>
         </div>
       </div>
     </section>

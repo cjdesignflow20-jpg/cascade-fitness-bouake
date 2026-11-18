@@ -247,6 +247,7 @@ button {
   justify-content: space-between;
   width: 28px;
   height: 20px;
+  z-index: 1001;
 }
 
 .mobile-toggle span {
@@ -254,7 +255,107 @@ button {
   height: 2.5px;
   background-color: #FFFFFF;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mobile-toggle.open span:nth-child(1) {
+  transform: translateY(8.5px) rotate(45deg);
+}
+
+.mobile-toggle.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.mobile-toggle.open span:nth-child(3) {
+  transform: translateY(-8.5px) rotate(-45deg);
+}
+
+/* --- Tiroir de Navigation Mobile (Fullscreen Drawer) --- */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(8, 8, 8, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 28px 48px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-drawer.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobile-drawer-logo {
+  height: 42px;
+  width: auto;
+  border-radius: 8px;
+}
+
+.mobile-drawer-close {
+  color: #FFFFFF;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-drawer-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: rotate(90deg);
+}
+
+.mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 36px 0;
+}
+
+.mobile-nav-link {
+  font-family: var(--font-family);
+  font-size: 26px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+.mobile-nav-link:hover, .mobile-nav-link.active {
+  color: var(--color-accent);
+  transform: translateX(8px);
+}
+
+.mobile-drawer-cta .btn-drawer {
+  width: 100%;
+  padding: 16px;
+  font-size: 14.5px;
+  letter-spacing: 0.06em;
 }
 
 /* ==========================================================================
@@ -303,6 +404,14 @@ button {
   height: 100%;
   object-fit: cover;
   filter: brightness(0.92) contrast(1.05);
+}
+
+.hero-video-desktop {
+  display: block;
+}
+
+.hero-video-mobile {
+  display: none;
 }
 
 .hero-overlay {
@@ -718,8 +827,13 @@ button {
   color: var(--color-text-dim);
 }
 
+/* Masquage par défaut du carrousel mobile double rangée sur desktop */
+.carousel-mobile-dual {
+  display: none;
+}
+
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (TABLETTE & SMARTPHONE)
    ========================================================================== */
 @media (max-width: 1024px) {
   :root {
@@ -739,40 +853,202 @@ button {
 
 @media (max-width: 768px) {
   :root {
-    --carousel-card-width: 320px;
-    --carousel-card-height: 270px;
-    --carousel-gap: 18px;
-    --navbar-height: 70px;
+    --navbar-height: 64px;
+  }
+
+  .navbar-container {
+    padding: 0 20px;
   }
 
   .nav-links, .nav-cta {
-    display: none;
+    display: none !important;
   }
 
   .mobile-toggle {
     display: flex;
   }
 
+  /* Bascule vidéo : Affichage de la vidéo verticale sur mobile */
+  .hero-video-desktop {
+    display: none !important;
+  }
+
+  .hero-video-mobile {
+    display: block !important;
+  }
+
+  /* Adaptation Section Hero Mobile (conforme Frame 53) */
   .hero-section {
-    padding: 100px 16px 60px;
+    padding: 0;
+  }
+
+  .hero-card-scale {
+    padding: 100px 20px 60px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .anim-eyebrow {
+    margin-bottom: 16px;
+  }
+
+  .eyebrow-badge {
+    font-size: 11px;
+    font-weight: 400; /* Inter Regular */
+    padding: 5px 14px;
+    letter-spacing: 0.12em;
+  }
+
+  .hero-title {
+    font-size: clamp(23px, 6.4vw, 30px);
+    font-weight: 700; /* Inter Bold */
+    line-height: 1.2;
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-description {
+    font-size: 13.5px;
+    font-weight: 400; /* Inter Regular */
+    line-height: 1.5;
+    margin-bottom: 26px;
+    max-width: 320px;
   }
 
   .hero-actions {
     flex-direction: column;
+    gap: 12px;
     width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
   }
 
   .hero-actions .btn {
     width: 100%;
+    padding: 13px 20px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
   }
 
-  .carousel-btn {
-    display: none;
+  .scroll-cue {
+    bottom: 16px;
   }
-  
+
+  /* Adaptation Section Univers Page 2 Mobile (conforme Frame 57) */
+  .univers-section {
+    padding: 70px 0 80px;
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+  }
+
+  .univers-header {
+    margin-bottom: 24px;
+    padding: 0 18px;
+  }
+
+  .anim-p2-eyebrow {
+    margin-bottom: 12px;
+  }
+
+  .section-tag {
+    font-size: 11px;
+    font-weight: 400; /* Inter Regular */
+    letter-spacing: 0.14em;
+  }
+
+  .univers-title {
+    font-size: clamp(24px, 6.5vw, 32px);
+    font-weight: 700; /* Inter Bold */
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .univers-description {
+    font-size: 13.5px;
+    font-weight: 400; /* Inter Regular */
+    line-height: 1.5;
+    max-width: 300px;
+  }
+
+  /* --- Bascule Carrousel : Masquage Desktop & Affichage Double Rangée Mobile --- */
+  .carousel-desktop {
+    display: none !important;
+  }
+
+  .carousel-mobile-dual {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 24px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mobile-row-viewport {
+    width: 100%;
+    overflow: hidden;
+    padding: 2px 0;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+  .mobile-row-viewport:active {
+    cursor: grabbing;
+  }
+
+  .mobile-row-track {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .mobile-card {
+    width: clamp(185px, 49vw, 215px);
+    height: clamp(146px, 39vw, 170px);
+    flex-shrink: 0;
+    border-radius: 13px;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-bg-card);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-card .card-overlay {
+    padding: 14px 12px;
+  }
+
+  .mobile-card .card-badge {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin-bottom: 2px;
+  }
+
+  .mobile-card .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .mobile-hint {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--color-text-dim);
+  }
+
   .footer-container {
     flex-direction: column;
     text-align: center;
     justify-content: center;
+    gap: 14px;
   }
 }

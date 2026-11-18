@@ -29,13 +29,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, { passive: true });
 
-  if (mobileToggle && navLinks) {
+  // Gestion du tiroir de menu mobile (Drawer)
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const mobileDrawerClose = document.getElementById('mobileDrawerClose');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .btn-drawer');
+
+  function openMobileDrawer() {
+    if (!mobileDrawer) return;
+    mobileDrawer.classList.add('open');
+    if (mobileToggle) mobileToggle.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Animation cadencée des liens du menu mobile
+    gsap.fromTo('.mobile-nav-link', 
+      { y: 20, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.45, stagger: 0.07, ease: 'power2.out', delay: 0.08 }
+    );
+    gsap.fromTo('.mobile-drawer-cta', 
+      { y: 15, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 0.45, ease: 'power2.out', delay: 0.3 }
+    );
+  }
+
+  function closeMobileDrawer() {
+    if (!mobileDrawer) return;
+    mobileDrawer.classList.remove('open');
+    if (mobileToggle) mobileToggle.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (mobileToggle) {
     mobileToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      mobileToggle.classList.toggle('open');
-      mobileToggle.setAttribute('aria-expanded', isOpen);
+      if (mobileDrawer && mobileDrawer.classList.contains('open')) {
+        closeMobileDrawer();
+      } else {
+        openMobileDrawer();
+      }
     });
   }
+
+  if (mobileDrawerClose) {
+    mobileDrawerClose.addEventListener('click', closeMobileDrawer);
+  }
+
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMobileDrawer();
+    });
+  });
 
   /* --------------------------------------------------------------------------
      2. ANIMATION D'ENTRÉE DU HERO (SYNCHRONISÉE & CADENCÉE)
@@ -152,8 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
       stagger: 0.12, 
       ease: 'power3.out',
       onComplete: () => {
-        // Démarre la boucle infinie continue après l'apparition
+        // Démarre la boucle infinie continue après l'apparition (Desktop & Mobile)
         initInfiniteCarousel();
+        initMobileDualCarousel();
       }
     }, 
     '-=0.4'
@@ -342,6 +384,140 @@ document.addEventListener('DOMContentLoaded', () => {
       const updatedWidth = updatedRect.width + updatedGap;
       singleSetWidth = updatedWidth * count;
     });
+  }
+
+  /* --------------------------------------------------------------------------
+     5. CARROUSEL MOBILE DOUBLE RANGÉE (RANGÉE 1 & RANGÉE 2 INFINIES)
+     Conforme à la maquette Figma Frame 57 : deux rangées en mouvement fluide
+     -------------------------------------------------------------------------- */
+  function setupMarqueeTrack(track, viewport, direction = -1, speed = 32) {
+    if (!track || !viewport) return;
+    if (track.dataset.initialized === 'true') return;
+    track.dataset.initialized = 'true';
+
+    const originalCards = Array.from(track.children);
+    const count = originalCards.length;
+    if (count === 0) return;
+
+    // Cloner 2 ensembles complets (3 séries au total) pour garantir zéro trou
+    for (let s = 0; s < 2; s++) {
+      originalCards.forEach((c) => {
+        const clone = c.cloneNode(true);
+        clone.classList.add('is-clone');
+        track.appendChild(clone);
+      });
+    }
+
+    function calcWidth() {
+      const cardRect = originalCards[0].getBoundingClientRect();
+      const style = window.getComputedStyle(track);
+      const gap = parseFloat(style.gap) || 14;
+      return (cardRect.width + gap) * count;
+    }
+
+    let singleSetWidth = calcWidth() || 600;
+    // Si direction > 0 (défilement vers la droite), partir de -singleSetWidth
+    let currentPos = direction > 0 ? -singleSetWidth : 0;
+    let isPaused = false;
+    let isDragging = false;
+    let startX = 0;
+    let prevPos = 0;
+    let dragVelocity = 0;
+
+    function tick(time, deltaTime) {
+      if (!isDragging) {
+        if (!isPaused) {
+          currentPos += direction * (speed * (deltaTime / 1000));
+        } else if (Math.abs(dragVelocity) > 0.1) {
+          currentPos += dragVelocity;
+          dragVelocity *= 0.92;
+        }
+
+        // Boucle infinie fluide
+        if (currentPos <= -singleSetWidth) {
+          currentPos += singleSetWidth;
+        } else if (currentPos >= 0) {
+          currentPos -= singleSetWidth;
+        }
+
+        gsap.set(track, { x: currentPos });
+      }
+    }
+
+    gsap.ticker.add(tick);
+
+    // Interaction tactile & souris (Drag / Touch Swipe)
+    function onStart(clientX) {
+      isDragging = true;
+      isPaused = true;
+      startX = clientX;
+      prevPos = currentPos;
+      dragVelocity = 0;
+    }
+
+    function onMove(clientX) {
+      if (!isDragging) return;
+      const delta = clientX - startX;
+      dragVelocity = delta * 0.4;
+      currentPos = prevPos + delta;
+
+      if (currentPos <= -singleSetWidth) {
+        currentPos += singleSetWidth;
+        prevPos += singleSetWidth;
+      } else if (currentPos >= 0) {
+        currentPos -= singleSetWidth;
+        prevPos -= singleSetWidth;
+      }
+      gsap.set(track, { x: currentPos });
+    }
+
+    function onEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      setTimeout(() => {
+        isPaused = false;
+      }, 700);
+    }
+
+    // Événements Souris
+    viewport.addEventListener('mouseenter', () => { isPaused = true; });
+    viewport.addEventListener('mouseleave', () => { if (!isDragging) isPaused = false; });
+    viewport.addEventListener('mousedown', (e) => onStart(e.clientX));
+    window.addEventListener('mousemove', (e) => { if (isDragging) onMove(e.clientX); });
+    window.addEventListener('mouseup', onEnd);
+
+    // Événements Touch (Smartphones & Tablettes)
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) onStart(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length > 0) onMove(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('touchend', onEnd);
+
+    // Redimensionnement
+    window.addEventListener('resize', () => {
+      singleSetWidth = calcWidth();
+    });
+  }
+
+  function initMobileDualCarousel() {
+    const track1 = document.getElementById('mobileTrack1');
+    const viewport1 = document.getElementById('mobileViewport1');
+    const track2 = document.getElementById('mobileTrack2');
+    const viewport2 = document.getElementById('mobileViewport2');
+
+    // Rangée 1 : défile vers la gauche (vitesse constante 32px/s)
+    setupMarqueeTrack(track1, viewport1, -1, 32);
+    // Rangée 2 : défile vers la droite (vitesse constante 28px/s, effet croisé premium)
+    setupMarqueeTrack(track2, viewport2, 1, 28);
+  }
+
+  // Démarrage automatique immédiat pour la version mobile
+  if (window.innerWidth <= 768) {
+    initMobileDualCarousel();
   }
 
 });
