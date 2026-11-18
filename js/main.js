@@ -83,51 +83,81 @@ document.addEventListener('DOMContentLoaded', () => {
      Garantit un affichage instantané du poster et une transition douce sans flash noir
      -------------------------------------------------------------------------- */
   function setupHeroVideoTransition() {
-    const isMobile = window.innerWidth <= 768;
     const desktopVideo = document.querySelector('.hero-video-desktop');
     const mobileVideo = document.querySelector('.hero-video-mobile');
     const desktopPoster = document.querySelector('.hero-poster-desktop');
     const mobilePoster = document.querySelector('.hero-poster-mobile');
+    let activeVideo = null;
+    let activePoster = null;
+    let playingHandler = null;
+    let errorHandler = null;
+    let activeIsMobile = null;
 
-    function bindTransition(video, poster) {
-      if (!video) return;
+    function stopActiveVideo() {
+      if (!activeVideo) return;
 
-      function onReadyToPlay() {
+      activeVideo.removeEventListener('playing', playingHandler);
+      activeVideo.removeEventListener('error', errorHandler);
+      activeVideo.pause();
+      activeVideo.removeAttribute('src');
+      activeVideo.removeAttribute('poster');
+      activeVideo.classList.remove('is-loaded');
+      activeVideo.load();
+      activePoster.classList.remove('is-hidden');
+      activeVideo = null;
+      activePoster = null;
+    }
+
+    function activateVideo(isMobile) {
+      if (activeIsMobile === isMobile) return;
+
+      stopActiveVideo();
+      activeIsMobile = isMobile;
+      activeVideo = isMobile ? mobileVideo : desktopVideo;
+      activePoster = isMobile ? mobilePoster : desktopPoster;
+      if (!activeVideo || !activePoster) return;
+
+      activePoster.classList.remove('is-hidden');
+      activeVideo.classList.remove('is-loaded');
+      activeVideo.poster = activePoster.currentSrc || activePoster.src;
+      activeVideo.src = activeVideo.dataset.src;
+
+      const video = activeVideo;
+      const poster = activePoster;
+
+      playingHandler = () => {
         video.classList.add('is-loaded');
-        if (poster) {
-          setTimeout(() => {
+        setTimeout(() => {
+          if (activeVideo === video && video.classList.contains('is-loaded')) {
             poster.classList.add('is-hidden');
-          }, 150);
-        }
-      }
+          }
+        }, 150);
+      };
 
-      if (video.readyState >= 3 && !video.paused) {
-        onReadyToPlay();
-      } else {
-        video.addEventListener('playing', onReadyToPlay, { once: true });
-        if (video.paused) {
-          video.play().catch(() => {});
+      errorHandler = () => {
+        const error = video.error;
+        video.classList.remove('is-loaded');
+        poster.classList.remove('is-hidden');
+        console.error('Échec du chargement ou de la lecture de la vidéo du HERO.', error);
+      };
+
+      video.addEventListener('playing', playingHandler, { once: true });
+      video.addEventListener('error', errorHandler);
+      video.load();
+      video.play().catch(error => {
+        if (error.name !== 'AbortError') {
+          console.error('Impossible de démarrer la vidéo du HERO.', error);
         }
-        setTimeout(onReadyToPlay, 3000);
-      }
+      });
     }
 
-    if (isMobile) {
-      bindTransition(mobileVideo, mobilePoster);
-    } else {
-      bindTransition(desktopVideo, desktopPoster);
-    }
+    activateVideo(window.innerWidth <= 768);
 
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
-        const nowMobile = window.innerWidth <= 768;
-        if (nowMobile) {
-          bindTransition(mobileVideo, mobilePoster);
-        } else {
-          bindTransition(desktopVideo, desktopPoster);
-        }
+        activateVideo(window.innerWidth <= 768);
       }, 250);
     });
   }
